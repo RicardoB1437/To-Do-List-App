@@ -1,14 +1,21 @@
 package baseline;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ToDoList
 {
     public String title;
-    public List<Item> itemList = new ArrayList<>();
+    ObservableList<Item> items = FXCollections.observableArrayList();
 
-    public void ToDoList(String title)
+    public ToDoList()
+    {
+
+    }
+    public ToDoList(String title)
     {
         this.title = title;
     }
@@ -20,10 +27,14 @@ public class ToDoList
         this.title = title;
     }
 
-    public List<Item> getItemList() {
-        return itemList;
+    public List<Item> getItems() {
+        return items;
     }
-    public void setItemList(List<Item> itemList) {
-        this.itemList = itemList;
+    public void setItems(ObservableList<Item> itemList) {
+        this.items = itemList;
+    }
+    public void addList(ObservableList<ToDoList> lists, ToDoList list)
+    {
+        lists.add(list);
     }
 }

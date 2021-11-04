@@ -1,65 +1,142 @@
 package baseline;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class ToDoHomeController {
 
+    ObservableList<ToDoList> lists = FXCollections.observableArrayList();
+    ObservableList<String> listTitles = FXCollections.observableArrayList();
+
     @FXML
-    private MenuItem EditListButton;
-    @FXML
-    private MenuItem RemoveListButton;
-    @FXML
-    private MenuItem ShowListButton;
+    private ToggleGroup FilterGroup;
     @FXML
     private Button addListButton;
     @FXML
-    private ListView<?> list;
+    private Button addItemButton;
     @FXML
-    private ContextMenu listContextMenu;
+    private CheckBox completedCheckMark;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private Button deleteAllItemsButton;
+    @FXML
+    private Button deleteItemButton;
+    @FXML
+    private Button deleteListButton;
+    @FXML
+    private TextField descriptionField;
+    @FXML
+    private Button editItemButton;
+    @FXML
+    private Button editListButton;
+    @FXML
+    private ChoiceBox<Item> itemDropDown;
+    @FXML
+    private ChoiceBox<String> listDropDown;
     @FXML
     private Button loadListButton;
     @FXML
     private Button saveListButton;
+    @FXML
+    private TextField titleField;
+    @FXML
+    private Button viewItemButton;
 
     @FXML
     void addList(ActionEvent event) {
-        //this will pop up a new screen that will allow you to input values for the new toDoList
-        //adds the toDoList with inputted values into the list containing all toDoLists
+        ToDoList handler = new ToDoList();
+
+        String title = titleField.getText();
+        ToDoList list = new ToDoList(title);
+        if(title.equals("") || listTitles.contains(title))
+        {
+            //say that title cant be empty
+            return;
+        }
+        handler.addList(getLists(), list);
+        listTitles.add(title);
+    }
+
+    @FXML
+    void deleteAllItems(ActionEvent event) {
+
+    }
+
+    @FXML
+    void deleteItem(ActionEvent event) {
+
+    }
+
+    @FXML
+    void deleteList(ActionEvent event) {
+
+    }
+
+    @FXML
+    void addItem(ActionEvent event) {
+
+    }
+
+    @FXML
+    void editItem(ActionEvent event) {
+
     }
 
     @FXML
     void editList(ActionEvent event) {
-        //this will pop up the same screen as add list and allows you to change values
-        //wont add the list to toDoList since it already exists, so it will just update the data
+
     }
 
     @FXML
     void loadListFromMemory(ActionEvent event) {
-        //this will pull any file you have in your memory that contains lists and parse it
-        //will then take the parsed data and make the toDoLists and add them to list
-    }
 
-    @FXML
-    void removeList(ActionEvent event) {
-        //removes the toDoList from the list
     }
 
     @FXML
     void saveListToMemory(ActionEvent event) {
-        //allows you to save in the list to a file
-        //most likely going to do csv for the list information
+
     }
 
     @FXML
-    void showList(ActionEvent event) {
-        //pops a screen up showing the information for the toDoList selected
-        //this screen will not allow you to change information
+    void viewItem(ActionEvent event) {
+
     }
 
+    public ObservableList<ToDoList> getLists() {
+        return lists;
+    }
+
+    public void setLists(ObservableList<ToDoList> lists) {
+        this.lists = lists;
+    }
+
+    public ObservableList<String> getListTitles() {
+        return listTitles;
+    }
+
+    public void setListTitles(ObservableList<String> listTitles) {
+        this.listTitles = listTitles;
+    }
+
+    private final StringProperty twoWayInput = new SimpleStringProperty("");
+
+    @FXML
+    public void initialize()
+    {
+        listDropDown.setItems(listTitles);
+    }
 }
