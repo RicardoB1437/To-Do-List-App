@@ -6,25 +6,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class ToDoHomeController {
 
-    ObservableList<ToDoList> lists = FXCollections.observableArrayList();
-    ObservableList<String> listTitles = FXCollections.observableArrayList();
-
     @FXML
     private ToggleGroup FilterGroup;
-    @FXML
-    private Button addListButton;
     @FXML
     private Button addItemButton;
     @FXML
@@ -36,40 +33,25 @@ public class ToDoHomeController {
     @FXML
     private Button deleteItemButton;
     @FXML
-    private Button deleteListButton;
-    @FXML
     private TextField descriptionField;
     @FXML
     private Button editItemButton;
     @FXML
-    private Button editListButton;
-    @FXML
-    private ChoiceBox<Item> itemDropDown;
-    @FXML
-    private ChoiceBox<String> listDropDown;
+    private ListView<Item> itemListView;
     @FXML
     private Button loadListButton;
     @FXML
     private Button saveListButton;
     @FXML
-    private TextField titleField;
-    @FXML
     private Button viewItemButton;
-
     @FXML
-    void addList(ActionEvent event) {
-        ToDoList handler = new ToDoList();
+    private Label infoLabel;
+    @FXML
+    private Label errLabel;
 
-        String title = titleField.getText();
-        ToDoList list = new ToDoList(title);
-        if(title.equals("") || listTitles.contains(title))
-        {
-            //say that title cant be empty
-            return;
-        }
-        handler.addList(getLists(), list);
-        listTitles.add(title);
-    }
+    private Item selectedItem;
+    @FXML
+    ObservableList<Item> items = FXCollections.observableArrayList();
 
     @FXML
     void deleteAllItems(ActionEvent event) {
@@ -78,26 +60,34 @@ public class ToDoHomeController {
 
     @FXML
     void deleteItem(ActionEvent event) {
-
-    }
-
-    @FXML
-    void deleteList(ActionEvent event) {
-
+        ItemListStore itemList = new ItemListStore();
+        //String description = //selected index
     }
 
     @FXML
     void addItem(ActionEvent event) {
+        ItemListStore itemList = new ItemListStore();
 
+        String description = descriptionField.getText();
+        LocalDate date = datePicker.getValue();
+        boolean marked = completedCheckMark.isSelected();
+        Item newItem = new Item(description, date, marked);
+
+        if(itemList.validInputCheck(items, description))
+        {
+            itemList.plusNumItems();
+            items.add(newItem);
+            errLabel.setText("");
+        }
+        else
+        {
+            errLabel.setText("Invalid Input");
+        }
+        descriptionField.clear();
     }
 
     @FXML
     void editItem(ActionEvent event) {
-
-    }
-
-    @FXML
-    void editList(ActionEvent event) {
 
     }
 
@@ -112,31 +102,43 @@ public class ToDoHomeController {
     }
 
     @FXML
-    void viewItem(ActionEvent event) {
-
-    }
-
-    public ObservableList<ToDoList> getLists() {
-        return lists;
-    }
-
-    public void setLists(ObservableList<ToDoList> lists) {
-        this.lists = lists;
-    }
-
-    public ObservableList<String> getListTitles() {
-        return listTitles;
-    }
-
-    public void setListTitles(ObservableList<String> listTitles) {
-        this.listTitles = listTitles;
-    }
-
-    private final StringProperty twoWayInput = new SimpleStringProperty("");
-
-    @FXML
     public void initialize()
     {
-        listDropDown.setItems(listTitles);
+        ItemListStore itemList = new ItemListStore();
+        itemList.setNumItems(0);
+        itemListView.setItems(items);
     }
+
+    public void updateInfoLabel()
+    {
+        ItemListStore itemList = new ItemListStore();
+        infoLabel.setText(itemList.toString());
+    }
+
+
+    public void listViewSelectedItem(Item item)
+    {
+        //ItemListStore itemList = new ItemListStore();
+        selectedItem = itemListView.getSelectionModel().getSelectedItem();
+        itemListView.getItems().addAll(items);
+        updateInfoLabel();
+    }
+
+    /*
+    public void changeScenes(ActionEvent event, Item item) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ToDoListAddItem.fxml"));
+        Parent parent = loader.load();
+
+        Scene scene = new Scene(parent);
+
+        //access controller to call methods
+        ToDoHomeController controller = loader.getController();
+        controller.listViewSelectedItem(item);
+
+        Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    */
 }

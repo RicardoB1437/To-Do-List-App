@@ -1,18 +1,20 @@
 package baseline;
 
+import java.time.LocalDate;
+
 public class Item
 {
     public String description;
-    public String dueDate;
+    public LocalDate dueDate;
     public boolean marked;
 
-    public void Item(String description, String dueDate)
+    public Item(String description, LocalDate dueDate)
     {
         this.description = description;
         this.dueDate = dueDate;
         this.marked = false;
     }
-    public void Item(String description, String dueDate, boolean marked)
+    public Item(String description, LocalDate dueDate, boolean marked)
     {
         this.description = description;
         this.dueDate = dueDate;
@@ -26,10 +28,10 @@ public class Item
         this.description = description;
     }
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -38,5 +40,11 @@ public class Item
     }
     public void setMarked(boolean marked) {
         this.marked = marked;
+    }
+
+    public String toString()
+    {
+        String str = (isMarked()) ? "Yes" : "No";
+        return String.format("Description: %s\nDate: %s\nCompleted: %s", getDescription(), getDueDate(), str);
     }
 }
