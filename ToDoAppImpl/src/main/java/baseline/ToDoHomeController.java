@@ -73,10 +73,10 @@ public class ToDoHomeController {
         boolean marked = completedCheckMark.isSelected();
         Item newItem = new Item(description, date, marked);
 
-        if(itemList.validInputCheck(items, description))
+        if(itemList.validInputCheck(TodoListApplication.getItems(), description))
         {
             itemList.plusNumItems();
-            items.add(newItem);
+            TodoListApplication.getItems().add(newItem);
             errLabel.setText("");
         }
         else
@@ -104,9 +104,9 @@ public class ToDoHomeController {
     @FXML
     public void initialize()
     {
-        ItemListStore itemList = new ItemListStore();
-        itemList.setNumItems(0);
-        itemListView.setItems(items);
+        //ItemListStore itemList = new ItemListStore();
+
+        itemListView.getItems().addAll(TodoListApplication.getItems());
     }
 
     public void updateInfoLabel()
@@ -119,8 +119,8 @@ public class ToDoHomeController {
     public void listViewSelectedItem(Item item)
     {
         //ItemListStore itemList = new ItemListStore();
-        selectedItem = itemListView.getSelectionModel().getSelectedItem();
-        itemListView.getItems().addAll(items);
+        selectedItem = item;
+        itemListView.getItems().addAll(TodoListApplication.getItems());
         updateInfoLabel();
     }
 

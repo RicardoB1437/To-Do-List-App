@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ItemListStore
 {
@@ -54,7 +55,7 @@ public class ItemListStore
         }
     }
 
-    public boolean validInputCheck(ObservableList<Item> items, String description)
+    public boolean validInputCheck(ArrayList<Item> items, String description)
     {
         if((description.equals("null") || description.isEmpty()))
         {
@@ -62,7 +63,7 @@ public class ItemListStore
         }
         else
         {
-            System.out.println(getItems().size());
+            System.out.println(TodoListApplication.getItems().size());
             for(int i=0;i<getNumItems();i++)
             {
                 System.out.println(description);
