@@ -3,6 +3,7 @@ package baseline;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ToDoHomeController {
@@ -50,8 +53,11 @@ public class ToDoHomeController {
     private Label errLabel;
 
     private Item selectedItem;
-    @FXML
-    ObservableList<Item> items = FXCollections.observableArrayList();
+
+    //private ArrayList<Item> items = new ArrayList<Item>();
+    //@FXML
+    //ObservableList<Item> itemList = FXCollections.observableArrayList(items);
+    private List<Item> controllerItemList;
 
     @FXML
     void deleteAllItems(ActionEvent event) {
@@ -66,17 +72,22 @@ public class ToDoHomeController {
 
     @FXML
     void addItem(ActionEvent event) {
-        ItemListStore itemList = new ItemListStore();
+        ItemListStore handler = new ItemListStore();
 
         String description = descriptionField.getText();
         LocalDate date = datePicker.getValue();
         boolean marked = completedCheckMark.isSelected();
         Item newItem = new Item(description, date, marked);
 
-        if(itemList.validInputCheck(TodoListApplication.getItems(), description))
+        if(!getControllerItemList().isEmpty() && handler.validInputCheck(getControllerItemList(), description))
         {
-            itemList.plusNumItems();
-            TodoListApplication.getItems().add(newItem);
+            itemListView.getItems().add(newItem);
+            controllerItemList.add(newItem);
+            //handler.getItemList().add(newItem);
+            //handler.addItem(description, date, marked);
+
+            System.out.println(handler.getItems());
+            System.out.println(controllerItemList);
             errLabel.setText("");
         }
         else
@@ -101,12 +112,14 @@ public class ToDoHomeController {
 
     }
 
+
     @FXML
     public void initialize()
     {
-        //ItemListStore itemList = new ItemListStore();
+        ItemListStore itemList = new ItemListStore();
+        controllerItemList = itemList.getItemList();
 
-        itemListView.getItems().addAll(TodoListApplication.getItems());
+        itemListView.getItems().addAll(itemList.getItems());
     }
 
     public void updateInfoLabel()
@@ -118,27 +131,16 @@ public class ToDoHomeController {
 
     public void listViewSelectedItem(Item item)
     {
-        //ItemListStore itemList = new ItemListStore();
-        selectedItem = item;
-        itemListView.getItems().addAll(TodoListApplication.getItems());
+        ItemListStore itemList = new ItemListStore();
+        //selectedItem = item;
+        itemListView.getItems().addAll(itemList.getItemList());
         updateInfoLabel();
     }
 
-    /*
-    public void changeScenes(ActionEvent event, Item item) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ToDoListAddItem.fxml"));
-        Parent parent = loader.load();
-
-        Scene scene = new Scene(parent);
-
-        //access controller to call methods
-        ToDoHomeController controller = loader.getController();
-        controller.listViewSelectedItem(item);
-
-        Stage primaryStage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public List<Item> getControllerItemList()
+    {
+        return controllerItemList;
     }
-    */
+
+
 }

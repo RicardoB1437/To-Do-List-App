@@ -14,8 +14,6 @@ import java.util.ArrayList;
 
 public class TodoListApplication extends javafx.application.Application
 {
-    private static ArrayList<Item> items;
-
     @Override
     public void start(Stage stage) throws Exception
     {
@@ -26,14 +24,9 @@ public class TodoListApplication extends javafx.application.Application
         stage.show();
     }
 
-    public static ArrayList<Item> getItems()
-    {
-        return items;
-    }
-
     public static void main(String[] args)
     {
-        items = new ArrayList<Item>();
+
         launch(args);
     }
 }
