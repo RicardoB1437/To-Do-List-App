@@ -1,6 +1,6 @@
 @startuml
 
-class Application
+class TodoListApplication
 {
     +start(Stage)
     +main(String[])
@@ -10,32 +10,34 @@ class Application
 
 class ToDoHomeController
 {
-    -MenuItem EditListButton
-    -MenuItem RemoveListButton
-    -MenuItem ShowListButton
-    -Button addListButton
-    -ListView<?> list
-    -ContextMenu listContextMenu
-    -Button loadListButton
-    -Button saveListButton
+    -ToggleGroup FilterGroup
+    -RadioButton allItemsFilterButton;
+    -RadioButton completedItemsFilterButton;
+    -RadioButton incompletedItemsFilterButton;
+    -CheckBox completedCheckMark;
+    -DatePicker datePicker;
+    -TextField descriptionField;
+    -ListView<Item> filteredItems;
+    -ArrayList<Item> itemList;
+    -Label errLabel;
 
-    +addList(ActionEvent)
-    +editList(ActionEvent)
+    +deleteAllItems(ActionEvent)
+    +deleteAllItemsFunction(ArrayList<Item): ArrayList<Item>
+    +deleteItem(ActionEvent)
+    +deleteItemFunction(int, ArrayList<Item>): ArrayList<Item>
+    +addItem(ActionEvent)
+    +addItemFunction(): Item
+    -editItem(ActionEvent)
+    +editFunction(int, ArrayList<Item>, Item): ArrayList<Item>
     +loadListFromMemory(ActionEvent)
-    +removeList(ActionEvent)
     +saveListToMemory(ActionEvent)
-    +showList(ActionEvent)
-}
-
-class ToDoList
-{
-    +String title
-    +List<Item> itemList
-
-    +getTitle:String
-    +setTitle(String)
-    +getItemList: List<Item>
-    +setItemList(List<Item>)
+    -updateGuiWithLoadedList(ArrayList<Item>)
+    -getMarkedItems(List<Item>): List<Item>
+    -getUnmarkedItems(List<Item>): List<Item>
+    -getAllItems(List<Item>): List<Item>
+    +radioButtonChanged()
+    +initialize()
+    +validInputCheck(String)
 }
 
 class Item
@@ -44,16 +46,27 @@ class Item
     +String dueDate;
     +boolean marked;
 
-    +setDescription(String)
     +getDescription: String
-    +setDueDate(String)
     +getDueDate: String
-    +setMarked(boolean)
     +getMarked: boolean
+    +toString(): String
 }
 
-ToDoList *-- Item
-ToDoHomeController *-- ToDoList
-Application -- ToDoHomeController
+class FileParse
+{
+    +loadFile(String): ArrayList<Item>
+    -convertFileToList(List<String>): ArrayList<Item>
+}
+
+class FileSave
+{
+    +saveFile(String, List<Item>)
+}
+
+TodoListApplication -- ToDoHomeController
+ToDoHomeController --* Item
+ToDoHomeController --* FileSave
+ToDoHomeController --* FileParse
+
 
 @enduml

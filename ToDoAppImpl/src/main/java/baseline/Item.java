@@ -24,22 +24,11 @@ public class Item
     public String getDescription() {
         return description;
     }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public LocalDate getDueDate() {
         return dueDate;
     }
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
     public boolean isMarked() {
         return marked;
-    }
-    public void setMarked(boolean marked) {
-        this.marked = marked;
     }
 
     public String toString()

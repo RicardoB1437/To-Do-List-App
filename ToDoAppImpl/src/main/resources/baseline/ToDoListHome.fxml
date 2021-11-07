@@ -76,13 +76,13 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <RadioButton mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="All">
+                        <RadioButton fx:id="allItemsFilterButton" mnemonicParsing="false" onAction="#radioButtonChanged" prefHeight="25.0" prefWidth="150.0" text="All">
                            <toggleGroup>
                               <ToggleGroup fx:id="FilterGroup" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Completed" toggleGroup="$FilterGroup" />
-                        <RadioButton mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Incomplete" toggleGroup="$FilterGroup" />
+                        <RadioButton fx:id="completedItemsFilterButton" mnemonicParsing="false" onAction="#radioButtonChanged" prefHeight="25.0" prefWidth="150.0" text="Completed" toggleGroup="$FilterGroup" />
+                        <RadioButton fx:id="incompletedItemsFilterButton" mnemonicParsing="false" onAction="#radioButtonChanged" prefHeight="25.0" prefWidth="150.0" text="Incomplete" toggleGroup="$FilterGroup" />
                      </children>
                   </VBox>
                </children>
@@ -100,13 +100,13 @@
                            <contextMenu>
                               <ContextMenu>
                                 <items>
-                                  <MenuItem fx:id="deleteItemMI" mnemonicParsing="false" text="Delete Item" />
-                                    <MenuItem fx:id="editItemMI" mnemonicParsing="false" text="Edit Item" />
+                                  <MenuItem fx:id="deleteItemMI" mnemonicParsing="false" onAction="#deleteItem" text="Delete Item" />
+                                    <MenuItem fx:id="editItemMI" mnemonicParsing="false" onAction="#editItem" text="Edit Item" />
                                 </items>
                               </ContextMenu>
                            </contextMenu>
                         </ListView>
-                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="500.0" text="Input New Item">
+                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="500.0" text="Input Item Details">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -134,7 +134,7 @@
                                     <Insets left="55.0" />
                                  </HBox.margin>
                               </CheckBox>
-                              <DatePicker fx:id="datePicker" maxWidth="-Infinity" prefHeight="25.0" prefWidth="140.0">
+                              <DatePicker fx:id="datePicker" editable="false" maxWidth="-Infinity" prefHeight="25.0" prefWidth="140.0">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
